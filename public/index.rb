@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+# Default RUBY_ENV environment variable to development if it is not set
 ENV["RUBY_ENV"] ||= 'development'
 
 require 'rubygems'
@@ -10,17 +11,28 @@ puts $cgi.header
 puts "<html><body>"
 
 begin
-	Dir['../app/**/*.rb'].each{ |f| require f }
 	require 'yaml'
 	require 'mysql2'
+	# Require all ruby files in the app directory
+	Dir['../app/**/*.rb'].each{ |f| require f }
 
+	# Get database connection info and connect to the database
 	database = YAML::load(File.open('../config/database.yml'))
 	client = Mysql2::Client.new(database[ENV["RUBY_ENV"]])
 
-	c = EmployeesController.new(client)
-	c.show
+	# Create the controller requested by the user
+	case $cgi['controller']
+	when 'employees'
+		controller = EmployeesController.new(client)
+	else
+		controller = EmployeesController.new(client)
+	end
+
+	# Call the action requested by the user on the created controller
+	controller.send($cgi['action'])
 
 rescue Exception => e
+	# If this is development, display the exception to the front end
 	if ENV["RUBY_ENV"] === 'development'
 		puts "<b>Exception: " + CGI.escapeHTML(e.inspect) + "</b>"
 	else
