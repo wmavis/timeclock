@@ -8,7 +8,7 @@ require 'cgi'
 $cgi = CGI.new
 puts $cgi.header
 
-puts "<html><body>"
+puts "<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"/css/timeclock.css\"></head><body>"
 
 begin
 	require 'yaml'
