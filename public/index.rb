@@ -7,7 +7,10 @@ require 'cgi'
 cgi = CGI.new
 puts cgi.header
 
+puts "<html><body>"
+
 begin
+	Dir['../app/**/*.rb'].each{ |f| require f }
 	require 'yaml'
 	require 'mysql2'
 
@@ -22,8 +25,12 @@ begin
 	employees.each do |employee|
 		puts employee.inspect + "<br />"
 	end
-
-	puts "<html><body>This is a test</body></html>"
 rescue Exception => e
-	puts "<html><body>Exception: " + CGI.escapeHTML(e.inspect) + "</body></html>"
+	if RUBY_ENV === 'development'
+		puts "<b>Exception: " + CGI.escapeHTML(e.inspect) + "</b>"
+	else
+		raise e
+	end
 end
+
+puts "</body></html>"
