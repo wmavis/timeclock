@@ -18,6 +18,20 @@ class EmployeesController < Controller
 	        puts "affected_rows: " + @client.affected_rows.to_s + "<br />"
 	end
 
+	def edit
+		id = @client.escape($cgi['id'])
+		employees = @client.query("SELECT id, identifier, first_name, last_name FROM employees WHERE id = '#{id}'")
+		if employees.count === 0
+			puts "NO EMPLOYEE FOUND"
+		else
+			employees.each do |employee|
+				@employee = employee
+			end
+		end
+
+		render "edit"
+	end
+
 	def show
 		id = @client.escape($cgi['id'])
 		employees = @client.query("SELECT id, identifier, first_name, last_name FROM employees WHERE id = '#{id}'")
@@ -34,6 +48,16 @@ class EmployeesController < Controller
 	end
 
 	def update
+		employee = Employee.new({})
+		employee.id = $cgi['id']
+		employee.identifier = $cgi['identifier']
+		employee.first_name = $cgi['first_name']
+		employee.last_name = $cgi['last_name']
+	        employee.save
+
+		@status_message = "Employee updated"
+
+		edit
 	end
 
 	def test

@@ -1,0 +1,25 @@
+<form method="POST">
+	<input type="hidden" name="controller" value="EmployeesController" />
+	<input type="hidden" name="action" value="update" />
+	<input type="hidden" name="id" value="<%= @employee['id'].to_s %>" />
+
+	<div class="status_message">
+		<%= @status_message %>
+	</div>
+
+	<div>
+		<label>Identifier:</label>
+		<input name="identifier" value="<%= @employee['identifier'].to_s %>" />
+	</div>
+	<div>
+		<label>First Name:</label>
+		<input name="first_name" value="<%= @employee['first_name'].to_s %>" />
+	</div>
+	<div>
+		<label>Last Name:</label>
+		<input name="last_name" value="<%= @employee['last_name'].to_s %>" />
+	</div>
+	<div>
+		<input type="submit" value="Save" />
+	</div>
+</form>
