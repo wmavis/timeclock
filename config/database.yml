@@ -1,0 +1,10 @@
+development: &development
+  :adapter: mysql2
+  :encoding: utf8
+  :database: timeclock
+  :username: timeclock_u
+  :password: timeclock_p
+
+test:
+  <<: *development
+  :database: timeclock_test
