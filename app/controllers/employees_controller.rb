@@ -1,5 +1,10 @@
 class EmployeesController < Controller
 
+	def asdf
+		e = Employee.new({ :identifier => 'ident', :first_name => 'fn', :id => 40 })
+		e.save
+	end
+
 	def index
 		employees = @client.query("SELECT id, identifier, first_name, last_name FROM employees ORDER BY id")
 
@@ -15,7 +20,7 @@ class EmployeesController < Controller
 
 	def show
 		id = @client.escape($cgi['id'])
-		employees = @client.query("SELECT id, identifier, first_name, last_name FROM employees WHERE id = #{id}")
+		employees = @client.query("SELECT id, identifier, first_name, last_name FROM employees WHERE id = '#{id}'")
 		if employees.count === 0
 			puts "NO EMPLOYEE FOUND"
 		else

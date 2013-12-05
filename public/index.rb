@@ -13,19 +13,23 @@ puts "<html><body>"
 begin
 	require 'yaml'
 	require 'mysql2'
+	# Require the base classes first
+	require '../app/models/model.rb'
+	require '../app/views/view.rb'
+	require '../app/controllers/controller.rb'
 	# Require all ruby files in the app directory
 	Dir['../app/**/*.rb'].each{ |f| require f }
 
 	# Get database connection info and connect to the database
 	database = YAML::load(File.open('../config/database.yml'))
-	client = Mysql2::Client.new(database[ENV["RUBY_ENV"]])
+	$client = Mysql2::Client.new(database[ENV["RUBY_ENV"]])
 
 	# Create the controller requested by the user
 	case $cgi['controller']
 	when 'employees'
-		controller = EmployeesController.new(client)
+		controller = EmployeesController.new($client)
 	else
-		controller = EmployeesController.new(client)
+		controller = EmployeesController.new($client)
 	end
 
 	# Call the action requested by the user on the created controller
