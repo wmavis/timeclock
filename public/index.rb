@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 
-RUBY_ENV = 'development'
+ENV["RUBY_ENV"] ||= 'development'
 
 require 'rubygems'
 require 'cgi'
-cgi = CGI.new
-puts cgi.header
+$cgi = CGI.new
+puts $cgi.header
 
 puts "<html><body>"
 
@@ -15,18 +15,13 @@ begin
 	require 'mysql2'
 
 	database = YAML::load(File.open('../config/database.yml'))
-	client = Mysql2::Client.new(database[RUBY_ENV])
+	client = Mysql2::Client.new(database[ENV["RUBY_ENV"]])
 
-	employees = client.query("INSERT INTO employees (identifier, first_name, last_name) VALUES ('id', 'fn', 'ln')")
-	puts "affected_rows: " + client.affected_rows.to_s + "<br />"
+	c = EmployeesController.new(client)
+	c.show
 
-	employees = client.query("SELECT * FROM employees")
-
-	employees.each do |employee|
-		puts employee.inspect + "<br />"
-	end
 rescue Exception => e
-	if RUBY_ENV === 'development'
+	if ENV["RUBY_ENV"] === 'development'
 		puts "<b>Exception: " + CGI.escapeHTML(e.inspect) + "</b>"
 	else
 		raise e

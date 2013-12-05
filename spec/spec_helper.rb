@@ -8,6 +8,11 @@
 ENV["RUBY_ENV"] = 'test'
 
 Dir[File.expand_path("../../app", __FILE__) + '/**/*.rb'].each{ |f| require f }
+require 'yaml'
+require 'mysql2'
+
+database = YAML::load(File.open(File.expand_path("../../config/database.yml", __FILE__)))
+$client = Mysql2::Client.new(database[ENV["RUBY_ENV"]])
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
