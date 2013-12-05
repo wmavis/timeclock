@@ -1,0 +1,11 @@
+<%
+@employees.each do |employee|
+%>
+	<div>
+		<a href="/index.rb?controller=EmployeesController&action=edit&id=<%= employee['id'].to_s %>"><%= employee['id'].to_s %></a> :
+		<%= employee['identifier'].to_s %>
+		(<%= employee['first_name'].to_s %> <%= employee['last_name'].to_s %>)
+	</div>
+<%
+end
+%>

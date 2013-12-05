@@ -6,11 +6,9 @@ class EmployeesController < Controller
 	end
 
 	def index
-		employees = @client.query("SELECT id, identifier, first_name, last_name FROM employees ORDER BY id")
+		@employees = @client.query("SELECT id, identifier, first_name, last_name FROM employees ORDER BY id")
 
-		employees.each do |employee|
-			puts employee['id'].to_s + ": " + employee['identifier'].to_s + "(" + employee['first_name'].to_s + " " + employee['last_name'].to_s + ")<br />"
-		end
+		render "index"
 	end
 
 	def create

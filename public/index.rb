@@ -28,7 +28,7 @@ begin
 	controller_name = $cgi['controller']
 	action_name = $cgi['action']
 	controller_name = "EmployeesController" if controller_name.empty?
-	action_name = "edit" if action_name.empty?
+	action_name = "index" if action_name.empty?
 
 	# Create the controller requested by the user
 	controller = Module.const_get(controller_name).new($client)
